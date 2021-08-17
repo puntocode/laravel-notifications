@@ -10,9 +10,5 @@ class Post extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $events = [
-        'created' => PostCreated::class,
-    ];
-
 
 }

@@ -1859,6 +1859,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -1874,7 +1879,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     markAsRead: function markAsRead(notification) {
-      axios.patch('notificaciones/' + notification.id);
+      var _this2 = this;
+
+      axios.patch('notificaciones/' + notification.id).then(function (res) {
+        return _this2.notifications = res.data;
+      });
+    },
+    markAllAsRead: function markAllAsRead() {
+      var _this3 = this;
+
+      this.notifications.forEach(function (notification) {
+        return _this3.markAsRead(notification);
+      });
     }
   }
 });
@@ -37434,23 +37450,35 @@ var render = function() {
       ? _c(
           "ul",
           { staticClass: "dropdown-menu" },
-          _vm._l(_vm.notifications, function(notification, index) {
-            return _c("li", { key: index, staticClass: "px-3" }, [
+          [
+            _vm._l(_vm.notifications, function(notification, index) {
+              return _c("li", { key: index, staticClass: "px-3" }, [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: notification.data.link },
+                    on: {
+                      click: function($event) {
+                        return _vm.markAsRead(notification)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(notification.data.text))]
+                )
+              ])
+            }),
+            _vm._v(" "),
+            _c("li", [
+              _c("hr"),
+              _vm._v(" "),
               _c(
                 "a",
-                {
-                  attrs: { href: notification.data.link },
-                  on: {
-                    click: function($event) {
-                      return _vm.markAsRead(notification)
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(notification.data.text))]
+                { attrs: { href: "#" }, on: { click: _vm.markAllAsRead } },
+                [_vm._v("Marcar todo como leído")]
               )
             ])
-          }),
-          0
+          ],
+          2
         )
       : _vm._e()
   ])

@@ -8,6 +8,11 @@
             <li class="px-3" v-for="(notification, index) in notifications" :key="index">
                 <a @click="markAsRead(notification)" :href="notification.data.link">{{ notification.data.text }}</a>
             </li>
+
+            <li>
+                <hr>
+                <a href="#" @click="markAllAsRead">Marcar todo como leído</a>
+            </li>
         </ul>
     </li>
 </template>
@@ -26,6 +31,10 @@
         methods: {
             markAsRead(notification) {
                 axios.patch('notificaciones/'+notification.id)
+                    .then(res => this.notifications = res.data);
+            },
+            markAllAsRead(){
+                this.notifications.forEach(notification => this.markAsRead(notification)         )
             }
         },
     }
